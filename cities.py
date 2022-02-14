@@ -130,11 +130,11 @@ def guess_the_city(score, continent=False):
     guess = input(f"What is the capital of {country}? ")
     correct_answer = capital_cities.get_capital_city(country)
     if guess.lower() == correct_answer.lower():
-        print("That's right!")
+        print("That's right!", end=" ")
         score += 1
     else:
         print(f"Nope, the correct answer is {correct_answer}.")
-        print(f"You answered {score} correctly in a row.")
+        print(f"You answered {score} correctly in a row.", end=" ")
         score = 0
     return score
 
@@ -148,11 +148,11 @@ def guess_the_country(score, continent=False):
     guess = input(f"{city} is the capital of which country? ")
     correct_answer = capital_cities.get_country(city)
     if guess.lower() == correct_answer.lower():
-        print("That's right!")
+        print("That's right!", end=" ")
         score += 1
     else:
         print(f"Nope, the correct answer is {correct_answer}.")
-        print(f"You answered {score} correctly in a row.")
+        print(f"You answered {score} correctly in a row.", end=" ")
         score = 0
     return score
 
@@ -205,12 +205,10 @@ if __name__ == "__main__":
 
         play_again = input("Play again? (y/n) ")
         if play_again.lower() == "n":
-            print(
-                f"At the point you quit, you had answered {score} correctly in"
-                f" a row."
-            )
+            if score != 0:
+                print(f"You had answered {score} correctly in a row.")
             break
-        elif play_again.lower() == "y":
+        elif play_again.lower() in ("y", ""):
             pass
         else:
-            print("I'll take that as a yes.")
+            print("I didn't recognise that so I'll take it as a yes.")
