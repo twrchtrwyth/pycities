@@ -28,8 +28,8 @@ class CapitalCities:
         return self.continent_list[random_index]
 
     def get_country_list(self, continent=False):
-        """Returns a random country from the list. Can specify continent if
-        desired.
+        """Returns a list of all countries. Can specify continent to only
+        return countries from this continent.
         """
         self.country_list = []
         for entry in self.country_data:
@@ -56,8 +56,8 @@ class CapitalCities:
         return self.country_list
 
     def get_city_list(self, continent=False):
-        """Returns a random city from the list. Can specify continent if
-        desired.
+        """Returns a list of all capital cities. Can specify continent to only
+        return cities from this continent.
         """
         self.city_list = []
         for entry in self.country_data:
@@ -105,6 +105,7 @@ class CapitalCities:
         return self.city_list[random_index]
 
     def get_capital_city(self, country):
+        """Returns the capital city of the specified country."""
         for entry in self.country_data:
             if entry["CountryName"] == country:
                 return entry["CapitalName"]
@@ -112,6 +113,7 @@ class CapitalCities:
                 pass
 
     def get_country(self, city):
+        """Returns the country within which the specified city is located."""
         for entry in self.country_data:
             if entry["CapitalName"] == city:
                 return entry["CountryName"]
@@ -120,6 +122,9 @@ class CapitalCities:
 
 
 def guess_the_city(score, continent=False):
+    """Asks for the capital city of a random country. If answered correctly,
+    increments score by 1. If incorrent, resets score to 0.
+    """
     capital_cities = CapitalCities()
     country = capital_cities.get_random_country(continent)
     guess = input(f"What is the capital of {country}? ")
@@ -135,6 +140,9 @@ def guess_the_city(score, continent=False):
 
 
 def guess_the_country(score, continent=False):
+    """Asks for the country within which a random city if located. If answered
+    correctly, increments score by 1. If incorrent, resets score to 0.
+    """
     capital_cities = CapitalCities()
     city = capital_cities.get_random_city(continent)
     guess = input(f"{city} is the capital of which country? ")
@@ -162,27 +170,45 @@ if __name__ == "__main__":
 
     # Determine whether to guess capital city from country, or vice versa.
     while True:
-        mode = input("Do you want to guess countries (1) or cities (2)? ")
-        if str(mode) not in ("1", "2"):
-            print("Please enter either 1 or 2.")
+        mode = input(
+            "Do you want to guess countries (1), cities (2), or a mix (3)? "
+        )
+        if str(mode) not in ("1", "2", "3"):
+            print("Please enter either 1, 2 or 3.")
         else:
             break
 
     # Main loop.
     score = 0
     while True:
-        if str(mode) == "1":
-            if continent:
+        choice = random.randint(0, 1)  # For mode 3 only.
+        if continent:
+            if str(mode) == "1":
                 score = guess_the_country(score, continent)
-            else:
-                score = guess_the_country(score)
-        elif str(mode) == "2":
-            if continent:
+            elif str(mode) == "2":
                 score = guess_the_city(score, continent)
-            else:
+            elif str(mode) == "3":
+                if choice == 0:
+                    score = guess_the_country(score, continent)
+                elif choice == 1:
+                    score = guess_the_city(score, continent)
+        elif not continent:
+            if str(mode) == "1":
+                score = guess_the_country(score)
+            elif str(mode) == "2":
                 score = guess_the_city(score)
+            elif str(mode) == "3":
+                if choice == 0:
+                    score = guess_the_country(score)
+                elif choice == 1:
+                    score = guess_the_city(score)
+
         play_again = input("Play again? (y/n) ")
         if play_again.lower() == "n":
+            print(
+                f"At the point you quit, you had answered {score} correctly in"
+                f" a row."
+            )
             break
         elif play_again.lower() == "y":
             pass
