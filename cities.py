@@ -156,7 +156,7 @@ if __name__ == "__main__":
     while True:
         mode = input("Do you want to guess countries (1) or cities (2)? ")
         if str(mode) not in ("1", "2"):
-            print("Sorry, please enter either 1 or 2.")
+            print("Please enter either 1 or 2.")
         else:
             break
 
@@ -164,14 +164,14 @@ if __name__ == "__main__":
     while True:
         if str(mode) == "1":
             if continent:
-                guess_the_city(continent)
-            else:
-                guess_the_city()
-        elif str(mode) == "2":
-            if continent:
                 guess_the_country(continent)
             else:
                 guess_the_country()
+        elif str(mode) == "2":
+            if continent:
+                guess_the_city(continent)
+            else:
+                guess_the_city()
         play_again = input("Play again? (y/n) ")
         if play_again.lower() == "n":
             break
