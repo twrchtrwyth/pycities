@@ -119,26 +119,34 @@ class CapitalCities:
                 pass
 
 
-def guess_the_city(continent=False):
+def guess_the_city(score, continent=False):
     capital_cities = CapitalCities()
     country = capital_cities.get_random_country(continent)
     guess = input(f"What is the capital of {country}? ")
     correct_answer = capital_cities.get_capital_city(country)
     if guess.lower() == correct_answer.lower():
         print("That's right!")
+        score += 1
     else:
         print(f"Nope, the correct answer is {correct_answer}.")
+        print(f"You answered {score} correctly in a row.")
+        score = 0
+    return score
 
 
-def guess_the_country(continent=False):
+def guess_the_country(score, continent=False):
     capital_cities = CapitalCities()
     city = capital_cities.get_random_city(continent)
     guess = input(f"{city} is the capital of which country? ")
     correct_answer = capital_cities.get_country(city)
     if guess.lower() == correct_answer.lower():
         print("That's right!")
+        score += 1
     else:
         print(f"Nope, the correct answer is {correct_answer}.")
+        print(f"You answered {score} correctly in a row.")
+        score = 0
+    return score
 
 
 if __name__ == "__main__":
@@ -161,17 +169,18 @@ if __name__ == "__main__":
             break
 
     # Main loop.
+    score = 0
     while True:
         if str(mode) == "1":
             if continent:
-                guess_the_country(continent)
+                score = guess_the_country(score, continent)
             else:
-                guess_the_country()
+                score = guess_the_country(score)
         elif str(mode) == "2":
             if continent:
-                guess_the_city(continent)
+                score = guess_the_city(score, continent)
             else:
-                guess_the_city()
+                score = guess_the_city(score)
         play_again = input("Play again? (y/n) ")
         if play_again.lower() == "n":
             break
